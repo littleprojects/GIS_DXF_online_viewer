@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+  <head>
+	<meta charset="utf-8">
+	<script src="dxf-parser.js"></script>
+	
+    <title>Read Text File Tutorial</title>
+  </head>
+  <body>
+	DXF File:<br>
+    <input type="file" id="dxf_file" name="dxf_file" onchange="loadFile(this.files[0])" accept=".dxf">
+    <br>
+	<br>
+	Var Name:<br>
+	<input type="text" id="var_name" value="pipes_json">
+	<br>
+	<br>
+	<input type="button" value="Parse" onclick="parseFile()">
+	<br>
+	<br>
+	<div id="status"><div>
+	
+    <pre id="output"></pre>
+    <script>
+	
+	//status 
+	function status(text){
+		document.getElementById('status').innerHTML = text;
+	}
+	
+	//create a user-defined function to download CSV file   
+	function download_file(file_name, data) {  
+	   
+		//display the created CSV data on the web browser   
+		//document.write(data);  
+		
+		 
+		var hiddenElement = document.createElement('a');  
+		hiddenElement.href = 'data:text;charset=utf-8,' + encodeURI(data);  
+		hiddenElement.target = '_blank';  
+		  
+		//provide the name for the CSV file to be downloaded  
+		hiddenElement.download = file_name;  
+		hiddenElement.click();  
+	}  
+		
+	
+	async function parseFile(){
+	
+		status('parse...')
+	
+		// get file
+		var dxfFile = document.getElementById('dxf_file').files[0];
+		
+		// get var name 
+		var var_name = document.getElementById('var_name').value;
+		
+		if (typeof dxfFile == 'undefined'){
+			status('NO FILE SELECTED!');
+			return;
+		}
+		
+		if (var_name == ''){
+			status('NO VAR_NAME!');
+			return;
+		}
+		
+		var parser = new window.DxfParser();
+		
+		let text = await dxfFile.text();
+		
+		var dxf = parser.parseSync(text);
+				
+		//console.log(dxf);
+		status('create JSON')
+		
+		out = 'var ' + var_name + ' = ';
+		out += JSON.stringify(dxf);
+		
+		
+        //document.getElementById('output').textContent = text+'\n\n';
+
+		var file_name = dxfFile.name;
+		file_name = file_name.replace('.DXF', '') + '.js';
+		file_name = file_name.replace('.dxf', '') + '.js';
+
+		status('prepare download')
+
+		download_file(file_name, out);	
+	}
+	
+    async function loadFile(file) {
+		
+		//console.log(file);
+		console.log(file.name);
+		
+		status('File geladen: ' + file.name);
+		
+        //let text = await file.text();
+		
+		//document.getElementById('output').textContent = text;
+		
+		//var parser = new window.DxfParser();
+		//var dxf = parser.parseSync(text);
+		
+		//console.log(dxf);
+		
+		//text = JSON.stringify(dxf);
+		
+		
+        //document.getElementById('output').textContent = text+'\n\n';
+
+		//var file_name = file.name.replace('.DXF', '') + '.js';
+
+		//download_file(file_name, text);
+    }
+	  
+	  //var file_data = '';
+
+		//var parser = new window.DxfParser();
+		//var dxf = parser.parseSync(file_data);
+
+	  
+	  
+    </script>
+  </body>
+</html>
+
+
+
+
+</script>
+</body>
+</html>

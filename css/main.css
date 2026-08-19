@@ -1,0 +1,56 @@
+.header { 
+    //center
+    //background-image: linear-gradient (90deg, purple, blue, cyan, green, yellow, red, black);
+    background-color:white;
+    //background-color:#ff8200;
+    //color:white;
+}
+
+.selector-for-some-widget {
+    box-sizing: content-box;
+}
+
+body {
+    font-family:verdana;
+}
+
+h1 {
+    font-weight: bold;
+}
+
+h2 {
+    font-weight: bold;
+}
+
+.row {
+    margin: 10px;
+}
+
+.box {
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    max-width: 600px;
+    border-color:#ff8200;
+}
+
+.right {
+     text-align: right;
+}
+
+.main-col {
+    max-width: 1000px;
+}
+
+.map-img {
+    //height: 230px;
+    //width: 300px;
+    //max-width: 400px;
+    min-width: 200px;
+    height: auto;
+}
+
+.info_table {
+    width: 400px;
+}

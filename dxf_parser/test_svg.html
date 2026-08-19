@@ -1,0 +1,195 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>test</title>
+	
+	<!--<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>-->
+	
+	<style type="text/css">
+        html { font-family: Helvetica, Verdana, Arial, sans-serif; }
+        #map { width: 90%; height: 600px; margin: 20px; }
+        form { margin: 20px; }
+        .btn { margin: 20px; }
+        #center { margin: 20px; }
+    </style>
+	
+</head>
+<body>
+<style>
+
+</style>
+<!--<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>-->
+<!--<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet-src.js"></script>-->
+<!--<script src="proj4.js"></script>-->
+<!--<script src="test_json.js"></script>-->
+<script src="../maps/Demoprojekt.js"></script>
+<!--<script src="test.js"></script>-->
+
+Press F12
+
+ <div id="map"></div>
+
+<!--<script src="L.LatLng.UTM.js"></script>-->
+
+<script type="text/javascript">
+
+var dxf_json = demo1;
+
+const entities = dxf_json.entities;
+const blocks = dxf_json.blocks;
+
+//var line  = entities[0];
+
+console.log(dxf_json)
+
+// Object of icons
+var svgIcons = {};
+
+function print(text){
+	console.log(text);
+}
+
+
+function readIcon(name, block) {
+
+	//print(block.name.indexOf("*"));
+
+	//ignore non icons
+	if (block.name.indexOf("*") == -1){
+		//print(name);
+		//print(block);
+		
+		print(block.entities);
+		
+		var svg_elements = '';
+		
+		for (var i = 0; i < block.entities.length; i++){
+			var item = block.entities[i];
+		
+			if (item.type == "CIRCLE"){
+				//item.radius
+				//item.center.x
+				
+				svg_elements += "<circle cx=\"" + item.center.x + "\" cy=\"" + item.center.y + "\" r=\"" + item.radius + "\" stroke=\"black\" stroke-width=\"0.05\" fill=\"none\" />\n";
+				
+			}
+		
+			if (item.type == "LINE"){
+		
+				var line_start 	= item.vertices[0];
+				var line_end 	= item.vertices[1];
+			
+				var zf = 1; // Zoom factor
+			
+				//svg_path += line_start.x*zf + ',' + line_start.y*zf + ' ' + line_end.x*zf + ',' + line_end.y*zf + ' ';
+				svg_elements += "<line x1=\"" + line_start.x + "\" y1=\"" + line_start.y + "\" x2=\"" + line_end.x + "\" y2=\"" + line_end.y + "\" style=\"stroke:rgb(0,0,0);stroke-width:0.05\" />\n";
+			}
+			
+			//todo Circle
+		}
+		
+		var svg_options = '';
+		
+		//svg_options += 'style=\"border: 1px solid #000000;\"';
+		
+		//transform=\"scale(2)\"
+		//preserveAspectRatio=\"xMidYMid meet\"
+		//style=\"stroke: #000000; fill:none;\"
+		//width=\"40\" height=\"40\"
+		//viewBox=\"0 0 100 100\"
+		//transform=\"rotate(15)\"
+		
+		var svg = "<svg width=\"60\" height=\"60\" preserveAspectRatio=\"xMidYMid meet\" viewBox=\"-0.6 -0.6 1.2 1.2\" version=\"1.1\" " + svg_options + "  >\n " + svg_elements + "</svg>";
+		
+		//display
+		print("Name: " + name);
+		print(svg);
+		document.getElementById("map").innerHTML += name + "<br>" + svg + "<br>-------<br>\n";
+		
+		/*
+		const svgIcon = L.divIcon({
+		html: svg,
+		  className: "",
+		  iconSize: [24, 40],
+		  iconAnchor: [12, 40],
+		});
+		*/
+		
+		//save obj
+		//svgIcons[name] = svgIcon;
+		
+		//print(svg);
+		//print(svgIcon);
+	}
+
+	/*
+	entities: Array(4) [ {…}, {…}, {…}, … ]
+		color: 0		​​​​​
+		colorIndex: 0
+		handle: "34"
+		layer: "0"		​​​​​
+		lineweight: -2		​​​​​
+		ownerHandle: "32"		​​​​​
+		type: "LINE"		​​​​​
+		vertices: Array [ {…}, {…} ]		​​​​​​
+			0: Object { x: -0.5, y: -0.375, z: 0 }
+			1: Object { x: 0.5, y: -0.375, z: 0 }​​​
+	handle: "33"	​​​
+	layer: "0"	​​​
+	name: "S120"	​​​
+	name2: "S120"	​​​
+	ownerHandle: "32"	​​​
+	position: Object { x: 0, y: 0, z: 0 }	​​​
+	xrefPath: ""	
+	*/
+
+
+	/*
+	const svgIcon = L.divIcon({
+	html: `
+	<svg
+	  width="24"
+	  height="40"
+	  viewBox="0 0 100 100"
+	  version="1.1"
+	  preserveAspectRatio="none"
+	  xmlns="http://www.w3.org/2000/svg"
+	>
+	  <path d="M0 0 L50 100 L100 0 Z" fill="#7A8BE7"></path>
+	</svg>`,
+	  className: "",
+	  iconSize: [24, 40],
+	  iconAnchor: [12, 40],
+	});
+	
+	*/
+}
+
+//console.log(print_line(line));
+
+//read blocks and create SVGs
+block_names = Object.keys(dxf_json.blocks);
+//print(block_names);
+
+for (var i = 0; i < block_names.length; i++){
+	//print(block_names[i]);
+	//print(dxf_json.blocks[block_names[i]]);
+	readIcon(block_names[i], dxf_json.blocks[block_names[i]]);
+}
+
+print(svgIcons);
+
+//prind all lines
+//entities.forEach(print_entitie);
+		
+//console.log(XYtoLatLng(3358515.357759, 5807426.257735))
+		
+
+		
+</script>
+
+</body>
+</html>
